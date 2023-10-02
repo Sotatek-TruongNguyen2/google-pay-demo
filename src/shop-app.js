@@ -1,24 +1,26 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-scroll-effects/effects/waterfall.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import { scroll } from '@polymer/app-layout/helpers/helpers.js';
-import '@polymer/app-route/app-location.js';
-import '@polymer/app-route/app-route.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@polymer/iron-media-query/iron-media-query.js';
-import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/iron-selector/iron-selector.js';
-import './shop-category-data.js';
-import './shop-developer.js';
-import './shop-home.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-import { timeOut } from '@polymer/polymer/lib/utils/async.js';
-import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { getGooglePayConfig } from './shop-configuration.js';
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import "@polymer/app-layout/app-header/app-header.js";
+import "@polymer/app-layout/app-scroll-effects/effects/waterfall.js";
+import "@polymer/app-layout/app-toolbar/app-toolbar.js";
+import { scroll } from "@polymer/app-layout/helpers/helpers.js";
+import "@polymer/app-route/app-location.js";
+import "@polymer/app-route/app-route.js";
+import "@polymer/iron-flex-layout/iron-flex-layout.js";
+import "@polymer/iron-media-query/iron-media-query.js";
+import "@polymer/iron-pages/iron-pages.js";
+import "@polymer/iron-selector/iron-selector.js";
+import "./shop-category-data.js";
+import "./shop-developer.js";
+import "./shop-home.js";
+import { afterNextRender } from "@polymer/polymer/lib/utils/render-status.js";
+import { timeOut } from "@polymer/polymer/lib/utils/async.js";
+import { Debouncer } from "@polymer/polymer/lib/utils/debounce.js";
+import { getGooglePayConfig } from "./shop-configuration.js";
 
 // performance logging
-window.performance && performance.mark && performance.mark('shop-app - before register');
+window.performance &&
+  performance.mark &&
+  performance.mark("shop-app - before register");
 
 const googlepayConfig = getGooglePayConfig();
 
@@ -259,7 +261,7 @@ class ShopApp extends PolymerElement {
             <paper-icon-button icon="arrow-back" aria-label="Go back"></paper-icon-button>
           </a>
         </div>
-        <div class="logo" main-title=""><a href="/" aria-label="SHOP Home">GOOGLE PAY DEMO SHOP</a></div>
+        <div class="logo" main-title=""><a href="/" aria-label="SHOP Home">OMG DEMO SHOP</a></div>
         <div>
           <a on-tap="_openDeveloperDialog">
             <paper-icon-button
@@ -338,71 +340,81 @@ class ShopApp extends PolymerElement {
 `;
   }
 
-  static get is() { return 'shop-app'; }
+  static get is() {
+    return "shop-app";
+  }
 
-  static get properties() { return {
-    page: {
-      type: String,
-      reflectToAttribute: true,
-      observer: '_pageChanged'
-    },
+  static get properties() {
+    return {
+      page: {
+        type: String,
+        reflectToAttribute: true,
+        observer: "_pageChanged",
+      },
 
-    numItems: {
-      type: Number,
-      value: 0
-    },
+      numItems: {
+        type: Number,
+        value: 0,
+      },
 
-    _shouldShowTabs: {
-      computed: '_computeShouldShowTabs(page, smallScreen)'
-    },
+      _shouldShowTabs: {
+        computed: "_computeShouldShowTabs(page, smallScreen)",
+      },
 
-    _shouldRenderTabs: {
-      computed: '_computeShouldRenderTabs(_shouldShowTabs, loadComplete)'
-    },
+      _shouldRenderTabs: {
+        computed: "_computeShouldRenderTabs(_shouldShowTabs, loadComplete)",
+      },
 
-    _shouldRenderDrawer: {
-      computed: '_computeShouldRenderDrawer(smallScreen, loadComplete)'
-    }
-  }}
+      _shouldRenderDrawer: {
+        computed: "_computeShouldRenderDrawer(smallScreen, loadComplete)",
+      },
+    };
+  }
 
-  static get observers() { return [
-    '_routePageChanged(routeData.page)'
-  ]}
+  static get observers() {
+    return ["_routePageChanged(routeData.page)"];
+  }
 
   constructor() {
     super();
-    window.performance && performance.mark && performance.mark('shop-app.created');
+    window.performance &&
+      performance.mark &&
+      performance.mark("shop-app.created");
   }
 
   ready() {
     super.ready();
     // Custom elements polyfill safe way to indicate an element has been upgraded.
-    this.removeAttribute('unresolved');
+    this.removeAttribute("unresolved");
     // listen for custom events
-    this.addEventListener('add-cart-item', (e)=>this._onAddCartItem(e));
-    this.addEventListener('set-cart-item', (e)=>this._onSetCartItem(e));
-    this.addEventListener('clear-cart', (e)=>this._onClearCart(e));
-    this.addEventListener('change-section', (e)=>this._onChangeSection(e));
-    this.addEventListener('announce', (e)=>this._onAnnounce(e));
-    this.addEventListener('dom-change', (e)=>this._domChange(e));
-    this.addEventListener('show-invalid-url-warning', (e)=>this._onFallbackSelectionTriggered(e));
+    this.addEventListener("add-cart-item", (e) => this._onAddCartItem(e));
+    this.addEventListener("set-cart-item", (e) => this._onSetCartItem(e));
+    this.addEventListener("clear-cart", (e) => this._onClearCart(e));
+    this.addEventListener("change-section", (e) => this._onChangeSection(e));
+    this.addEventListener("announce", (e) => this._onAnnounce(e));
+    this.addEventListener("dom-change", (e) => this._domChange(e));
+    this.addEventListener("show-invalid-url-warning", (e) =>
+      this._onFallbackSelectionTriggered(e)
+    );
 
-    this.addEventListener('payment-selected', (e)=>this._onPaymentSelected(e));
-    this.addEventListener('confirmation', (e)=>this._onConfirmation(e));
+    this.addEventListener("payment-selected", (e) =>
+      this._onPaymentSelected(e)
+    );
+    this.addEventListener("confirmation", (e) => this._onConfirmation(e));
 
     // listen for online/offline
     afterNextRender(this, () => {
-      window.addEventListener('online', (e)=>this._notifyNetworkStatus(e));
-      window.addEventListener('offline', (e)=>this._notifyNetworkStatus(e));
+      window.addEventListener("online", (e) => this._notifyNetworkStatus(e));
+      window.addEventListener("offline", (e) => this._notifyNetworkStatus(e));
     });
   }
 
   _routePageChanged(page) {
-    if (this.page === 'list') {
+    if (this.page === "list") {
       this._listScrollTop = window.pageYOffset;
     }
 
-    this.page = page || 'home';
+    this.page = page || "home";
 
     // Close the drawer - in case the *route* change came from a link in the drawer.
     this.drawerOpened = false;
@@ -412,20 +424,20 @@ class ShopApp extends PolymerElement {
     if (page != null) {
       let cb = this._pageLoaded.bind(this, Boolean(oldPage));
       switch (page) {
-        case 'list':
-          import('./shop-list.js').then(cb);
+        case "list":
+          import("./shop-list.js").then(cb);
           break;
-        case 'detail':
-          import('./shop-detail.js').then(cb);
+        case "detail":
+          import("./shop-detail.js").then(cb);
           break;
-        case 'cart':
-          import('./shop-cart.js').then(cb);
+        case "cart":
+          import("./shop-cart.js").then(cb);
           break;
-        case 'checkout':
-          import('./shop-checkout.js').then(cb);
+        case "checkout":
+          import("./shop-checkout.js").then(cb);
           break;
-        case 'confirmation':
-          import('./shop-confirmation.js').then(cb);
+        case "confirmation":
+          import("./shop-confirmation.js").then(cb);
           break;
         default:
           this._pageLoaded(Boolean(oldPage));
@@ -448,10 +460,12 @@ class ShopApp extends PolymerElement {
     // load lazy resources after render and set `loadComplete` when done.
     if (!this.loadComplete) {
       afterNextRender(this, () => {
-        import('./lazy-resources.js').then(() => {
+        import("./lazy-resources.js").then(() => {
           // Register service worker if supported.
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js', {scope: '/'});
+          if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("service-worker.js", {
+              scope: "/",
+            });
           }
           this._notifyNetworkStatus();
           this.loadComplete = true;
@@ -462,16 +476,17 @@ class ShopApp extends PolymerElement {
 
   _notifyNetworkStatus() {
     let oldOffline = this.offline;
-    this.offline =  !navigator.onLine;
+    this.offline = !navigator.onLine;
     // Show the snackbar if the user is offline when starting a new session
     // or if the network status changed.
     if (this.offline || (!this.offline && oldOffline === true)) {
       if (!this._networkSnackbar) {
-        this._networkSnackbar = document.createElement('shop-snackbar');
+        this._networkSnackbar = document.createElement("shop-snackbar");
         this.root.appendChild(this._networkSnackbar);
       }
-      this._networkSnackbar.innerHTML = this.offline ?
-          'You are offline' : 'You are online';
+      this._networkSnackbar.innerHTML = this.offline
+        ? "You are offline"
+        : "You are online";
       this._networkSnackbar.open();
     }
   }
@@ -481,13 +496,15 @@ class ShopApp extends PolymerElement {
   }
 
   _setMeta(attrName, attrValue, content) {
-    let element = document.head.querySelector(`meta[${attrName}="${attrValue}"]`);
+    let element = document.head.querySelector(
+      `meta[${attrName}="${attrValue}"]`
+    );
     if (!element) {
-      element = document.createElement('meta');
+      element = document.createElement("meta");
       element.setAttribute(attrName, attrValue);
       document.head.appendChild(element);
     }
-    element.setAttribute('content', content || '');
+    element.setAttribute("content", content || "");
   }
 
   // Elements in the app can notify section changes.
@@ -498,7 +515,7 @@ class ShopApp extends PolymerElement {
     // Scroll to the top of the page when navigating to a non-list page. For list view,
     // scroll to the last saved position only if the category has not changed.
     let scrollTop = 0;
-    if (this.page === 'list') {
+    if (this.page === "list") {
       if (this.categoryName === detail.category) {
         scrollTop = this._listScrollTop;
       } else {
@@ -508,75 +525,97 @@ class ShopApp extends PolymerElement {
     }
     // Use `Polymer.AppLayout.scroll` with `behavior: 'silent'` to disable header scroll
     // effects during the scroll.
-    scroll({ top: scrollTop, behavior: 'silent' });
+    scroll({ top: scrollTop, behavior: "silent" });
 
-    this.categoryName = detail.category || '';
+    this.categoryName = detail.category || "";
 
     // Announce the page's title
     if (detail.title) {
-      document.title = detail.title + ' - SHOP';
-      this._announce(detail.title + ', loaded');
+      document.title = detail.title + " - SHOP";
+      this._announce(detail.title + ", loaded");
       // Set open graph metadata
-      this._setMeta('property', 'og:title', detail.title);
-      this._setMeta('property', 'og:description', detail.description || document.title);
-      this._setMeta('property', 'og:url', document.location.href);
-      this._setMeta('property', 'og:image', detail.image || this.baseURI + 'images/shop-icon-128.png');
+      this._setMeta("property", "og:title", detail.title);
+      this._setMeta(
+        "property",
+        "og:description",
+        detail.description || document.title
+      );
+      this._setMeta("property", "og:url", document.location.href);
+      this._setMeta(
+        "property",
+        "og:image",
+        detail.image || this.baseURI + "images/shop-icon-128.png"
+      );
       // Set twitter card metadata
-      this._setMeta('property', 'twitter:title', detail.title);
-      this._setMeta('property', 'twitter:description', detail.description || document.title);
-      this._setMeta('property', 'twitter:url', document.location.href);
-      this._setMeta('property', 'twitter:image:src', detail.image || this.baseURI + 'images/shop-icon-128.png');
+      this._setMeta("property", "twitter:title", detail.title);
+      this._setMeta(
+        "property",
+        "twitter:description",
+        detail.description || document.title
+      );
+      this._setMeta("property", "twitter:url", document.location.href);
+      this._setMeta(
+        "property",
+        "twitter:image:src",
+        detail.image || this.baseURI + "images/shop-icon-128.png"
+      );
     }
   }
 
   _onAddCartItem(event) {
     if (!this._cartModal) {
-      this._cartModal = document.createElement('shop-cart-modal');
+      this._cartModal = document.createElement("shop-cart-modal");
       this.root.appendChild(this._cartModal);
     }
     this.$.cart.addItem(event.detail);
     this._cartModal.open();
-    this._announce('Item added to the cart');
+    this._announce("Item added to the cart");
   }
 
   _onSetCartItem(event) {
     let detail = event.detail;
     this.$.cart.setItem(detail);
     if (detail.quantity === 0) {
-      this._announce('Item deleted');
+      this._announce("Item deleted");
     } else {
-      this._announce('Quantity changed to ' + detail.quantity);
+      this._announce("Quantity changed to " + detail.quantity);
     }
   }
 
   _onPaymentSelected(event) {
     const { paymentResponse, context } = event.detail;
-    if (context.method === 'google-pay') {
+    if (context.method === "google-pay") {
       this._processGooglePayPayment(paymentResponse, context);
     }
 
-    if (context.type === 'cart') {
-      this.dispatchEvent(new CustomEvent('clear-cart', {
-        bubbles: true, composed: true
-      }));
+    if (context.type === "cart") {
+      this.dispatchEvent(
+        new CustomEvent("clear-cart", {
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
 
-    this.dispatchEvent(new CustomEvent('confirmation', {
-      bubbles: true, composed: true
-    }));
-}
+    this.dispatchEvent(
+      new CustomEvent("confirmation", {
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
 
   _onConfirmation(event) {
-    this.set('route.path', '/confirmation');
+    this.set("route.path", "/confirmation");
   }
 
   _processGooglePayPayment(paymentResponse, context) {
-    console.log('Process Google Pay Payment', paymentResponse, context);
+    console.log("Process Google Pay Payment", paymentResponse, context);
   }
 
   _onClearCart() {
     this.$.cart.clearCart();
-    this._announce('Cart cleared');
+    this._announce("Cart cleared");
   }
 
   // Elements in the app can notify a change to be a11y announced.
@@ -586,11 +625,14 @@ class ShopApp extends PolymerElement {
 
   // A11y announce the given message.
   _announce(message) {
-    this._a11yLabel = '';
-    this._announceDebouncer = Debouncer.debounce(this._announceDebouncer,
-      timeOut.after(100), () => {
+    this._a11yLabel = "";
+    this._announceDebouncer = Debouncer.debounce(
+      this._announceDebouncer,
+      timeOut.after(100),
+      () => {
         this._a11yLabel = message;
-      });
+      }
+    );
   }
 
   // This is for performance logging only.
@@ -600,17 +642,19 @@ class ShopApp extends PolymerElement {
       let host = target.getRootNode().host;
       if (host && host.localName.match(this.page)) {
         this.__loggedDomChange = true;
-        performance.mark(host.localName + '.domChange');
+        performance.mark(host.localName + ".domChange");
       }
     }
   }
 
   _onFallbackSelectionTriggered() {
-    this.page = '404';
+    this.page = "404";
   }
 
   _computeShouldShowTabs(page, smallScreen) {
-    return (page === 'home' || page === 'list' || page === 'detail') && !smallScreen;
+    return (
+      (page === "home" || page === "list" || page === "detail") && !smallScreen
+    );
   }
 
   _computeShouldRenderTabs(_shouldShowTabs, loadComplete) {
@@ -622,7 +666,7 @@ class ShopApp extends PolymerElement {
   }
 
   _computePluralizedQuantity(quantity) {
-    return quantity + ' ' + (quantity === 1 ? 'item' : 'items');
+    return quantity + " " + (quantity === 1 ? "item" : "items");
   }
 
   _openDeveloperDialog() {
@@ -633,11 +677,13 @@ class ShopApp extends PolymerElement {
 
   _getGooglePayTransactionInfo() {
     if (this.cart) {
-      const paymentRequest = googlepayConfig.buildPaymentRequest(this.cart.map(i => ({
-        label: `${i.item.title} x ${i.quantity}`,
-        type: 'LINE_ITEM',
-        price: (i.item.price * i.quantity).toFixed(2),
-      })));
+      const paymentRequest = googlepayConfig.buildPaymentRequest(
+        this.cart.map((i) => ({
+          label: `${i.item.title} x ${i.quantity}`,
+          type: "LINE_ITEM",
+          price: (i.item.price * i.quantity).toFixed(2),
+        }))
+      );
 
       return paymentRequest;
     }
