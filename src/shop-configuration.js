@@ -84,7 +84,7 @@ function buildGooglePayPaymentRequest(displayItems, shippingOption) {
 
 const config = {
   googlepay: {
-    environment: "PRODUCTION",
+    environment: "TEST",
     existingPaymentMethodRequired: false,
     appearance: {
       buttonColor: "default",
